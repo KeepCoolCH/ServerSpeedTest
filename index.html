@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Server-to-Client Speed Test</title>
+  <style>
+    body { font-family: sans-serif; padding: 2em; background: #f4f4f4; }
+    #progress { margin-top: 1em; font-size: 1.2em; }
+    button { padding: 0.6em 1.2em; font-size: 1em; }
+  </style>
+</head>
+<body>
+  <h1>🚀 Server-to-Client Speed Test</h1>
+  <p>Click the button to start downloading a 500 MB file from the server and measure your download speed.</p>
+  <button onclick="startTest()">Start Test</button>
+  <div id="progress"></div>
+
+  <script>
+    function formatSpeed(bitsPerSec) {
+      const mbps = bitsPerSec / 1024 / 1024;
+      return mbps.toFixed(2) + ' Mbps';
+    }
+
+    function startTest() {
+      const url = 'speedtest.php?_=' + Date.now();
+      const progress = document.getElementById('progress');
+      progress.textContent = 'Running test...';
+
+      const start = performance.now();
+
+      fetch(url)
+        .then(res => res.blob())
+        .then(blob => {
+          const end = performance.now();
+          const duration = (end - start) / 1000; // in seconds
+          const bits = blob.size * 8;
+          const speed = bits / duration;
+          progress.textContent = `Downloaded 500 MB in ${duration.toFixed(2)} s → ${formatSpeed(speed)}`;
+        })
+        .catch(err => {
+          progress.textContent = 'Error: ' + err.message;
+        });
+    }
+  </script>
+</body>
+</html>
