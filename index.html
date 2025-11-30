@@ -17,8 +17,9 @@
 
   <script>
     function formatSpeed(bitsPerSec) {
-      const mbps = bitsPerSec / 1024 / 1024;
-      return mbps.toFixed(2) + ' Mbps';
+      const mbps = bitsPerSec / 1024 / 1024;     // Megabit/s
+      const MBps = (bitsPerSec / 8) / 1024 / 1024; // Megabyte/s
+      return mbps.toFixed(2) + ' Mbps (' + MBps.toFixed(2) + ' MB/s)';
     }
 
     function startTest() {
